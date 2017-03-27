@@ -1,0 +1,60 @@
+{
+  "name": "Minimal_React_Boilerplate",
+  "version": "1.1.0",
+  "description": "Boilerplate for kick starting a React Project with ES6 (Babel) and Hot reloader using Webpack.",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Igor Konovalov (https://igorkonovalov.github.io)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IgorKonovalov/Minimal_Eslint_Babel_Webpack_React-Setup.git"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --progress --colors --hot --config ./webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack -p --progress",
+    "lint": "eslint src webpack.config.js --ext .js,.jsx",
+    "test": "yarn lint"
+  },
+  "keywords": [
+    "react",
+    "es6",
+    "babel",
+    "webpack"
+  ],
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      [
+        "env",
+        {
+          "targets": {
+            "browsers": [
+              "last 2 versions"
+            ]
+          }
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-env": "^1.2.2",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "cross-env": "^3.2.4",
+    "eslint": "^3.18.0",
+    "eslint-config-kentcdodds": "^12.2.1",
+    "expect": "^1.20.2",
+    "react-hot-loader": "^1.3.1",
+    "webpack": "^2.3.2",
+    "webpack-dev-server": "^2.4.2"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "redux": "^3.6.0"
+  }
+}
