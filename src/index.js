@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import counter from './03_ReactRedux.js'
+import toggleTodo from './05_immutableObjects+test.js'
 
 ReactDOM.render(
   <h1>Redux training</h1>,
