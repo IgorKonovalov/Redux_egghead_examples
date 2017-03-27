@@ -1,4 +1,4 @@
-import {createStore} from 'redux'
+import {createStore, combineReducers} from 'redux'
 
 const todo = (state, action) => {
   switch (action.type) {
@@ -32,7 +32,7 @@ const todos = (state = [], action) => {
   }
 }
 
-const vidibilityFilter = ( // предположим мы захотели добавить функционал
+const visibilityFilter = ( // предположим мы захотели добавить функционал, нам нужно скомбинировать редюсеры
   state = 'SHOW_ALL',
   action
 ) => {
@@ -44,18 +44,38 @@ const vidibilityFilter = ( // предположим мы захотели до�
   }
 }
 
-const todoApp = (state = {}, action) => { // может воспользоваться коспозицией -
-  return {
-    todos: todos(
-      state.todos,
-      action
-    ),
-    visibilityFilter: vidibilityFilter(
-      state.visibilityFilter,
-      action
+const combineReducersImplement = reducers => {
+  return (state = {}, action) => {
+    return Object.keys(reducers).reduce(
+      (nextState, key) => {
+        nextState[key] = reducers[key](
+          state[key],
+          action
+        )
+        return nextState
+      },
+      {}
     )
   }
 }
+
+const todoApp = combineReducersImplement({
+  todos,
+  visibilityFilter
+})
+
+// const todoApp = (state = {}, action) => { // может воспользоваться коспозицией
+//   return {
+//     todos: todos(
+//       state.todos,
+//       action
+//     ),
+//     visibilityFilter: vidibilityFilter(
+//       state.visibilityFilter,
+//       action
+//     )
+//   }
+// }
 
 const store = createStore(todoApp)
 console.log('initial')
