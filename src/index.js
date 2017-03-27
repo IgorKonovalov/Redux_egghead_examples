@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import toggleTodo from './05_immutableObjects+test.js'
+import todos from './07_reducerComposition.js'
 
 ReactDOM.render(
   <h1>Redux training</h1>,
