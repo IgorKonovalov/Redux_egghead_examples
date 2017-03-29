@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import todos from './08_viewWithReact.js'
+// eslint-disable-next-line
+import todos from './08_viewWithReact'
 
 ReactDOM.render(
   <h1>Redux training</h1>,
