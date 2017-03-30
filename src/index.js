@@ -1,10 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-// eslint-disable-next-line
-import todos from './08_viewWithReact'
+import {Provider} from 'react-redux'
+import {createStore} from 'redux'
+import TodoApp from './app'
+import {todoApp} from './reducers'
+import {loadState} from './localStorage'
+
+const persistedState = loadState()
+
+const store = createStore(todoApp, persistedState)
+console.log(store);
 
 ReactDOM.render(
-  <h1>Redux training</h1>,
-  document.getElementById('app'))
+  <Provider store={store}>
+    <TodoApp />
+  </Provider>,
+  document.getElementById('root')
+)
 
 module.hot.accept()

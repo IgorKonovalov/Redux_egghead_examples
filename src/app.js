@@ -1,87 +1,30 @@
 /*eslint-disable*/
-import {createStore, combineReducers} from 'redux'
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
-import {connect, Provider} from 'react-redux'
+import {connect} from 'react-redux'
 
-// REDUCERS
-
-const todo = (state, action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: false,
-      }
-    case 'TOGGLE_TODO':
-      if (state.id !== action.id) {
-        return state
-      }
-      return {
-        ...state,
-        completed: !state.completed,
-      }
-    default:
-      return state
-  }
-}
-
-const todos = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return [
-        ...state,
-        todo(undefined, action), // reducer can call a reducer!
-      ]
-    case 'TOGGLE_TODO':
-      return state.map(t => todo(t, action))
-    default:
-      return state
-  }
-}
-
-const visibilityFilter = (
-  state = 'SHOW_ALL',
-  action,
-) => {
-  switch (action.type) {
-    case 'SET_VISIBILITY_FILTER':
-      return action.filter
-    default:
-      return state
-  }
-}
-
-const todoApp = combineReducers({
-  todos,
-  visibilityFilter,
-})
 
 // ACTION CREATORS
 
 let nextTodoId = 0
-const addTodo = (text) => {
-  return {
-    type: 'ADD_TODO',
-    id: nextTodoId++,
-    text
-  }
-}
+const addTodo = (text) => ({
+  type: 'ADD_TODO',
+  id: nextTodoId++,
+  text
+})
 
-const setVisibilityFilter = (filter) => {
-  return {
-    type: 'SET_VISIBILITY_FILTER',
-    filter: filter
-  }
-}
 
-const toggleTodo = (id) => {
-  return {
-    type: 'TOGGLE_TODO',
-    id
-  }
-}
+const setVisibilityFilter = (filter) => ({
+  type: 'SET_VISIBILITY_FILTER',
+  filter: filter
+})
+
+
+const toggleTodo = (id) => ({
+  type: 'TOGGLE_TODO',
+  id
+})
+
 
 
 const Link = ({ // presentational component - view only, doesn't know about state
@@ -107,22 +50,14 @@ const Link = ({ // presentational component - view only, doesn't know about stat
 const mapStateToLinkProps = (
   state,
   ownProps // см Footer компонент
-) => {
-  return {
-    active:
-      ownProps.filter === state.visibilityFilter
-  }
-}
+) => ({active: ownProps.filter === state.visibilityFilter})
 const mapDispatchToLinkProps = (
   dispatch,
   ownProps
-) => {
-  return {
-    onClick: (() => {
-      dispatch(setVisibilityFilter(ownProps.filter))
-    })
-  }
-}
+) => ({
+  onClick: (() => {dispatch(setVisibilityFilter(ownProps.filter))})
+})
+
 const FilterLink = connect(
   mapStateToLinkProps,
   mapDispatchToLinkProps
@@ -216,21 +151,17 @@ const getVisibleTodos = (
   }
 }
 
-const mapStateToTodoListProps = (state) => {
-  return {
-    todos: getVisibleTodos(
-      state.todos,
-      state.visibilityFilter
-    )
+const mapStateToTodoListProps = (state) => ({
+  todos: getVisibleTodos(
+    state.todos,
+    state.visibilityFilter
+  )
+})
+const mapDispatchToTodoListProps = (dispatch) => ({
+  onTodoClick: (id) => {
+    dispatch(toggleTodo(id))
   }
-}
-const mapDispatchToTodoListProps = (dispatch) => {
-  return {
-    onTodoClick: (id) => {
-      dispatch(toggleTodo(id))
-    }
-  }
-}
+})
 const VisibleTodoList = connect( // react-redux создает контейнер компонент, и пропсы этого контейнера использует presentational компонент
   mapStateToTodoListProps,
   mapDispatchToTodoListProps
@@ -245,10 +176,4 @@ const TodoApp = () => (
   </div>
 )
 
-
-ReactDOM.render(
-  <Provider store={createStore(todoApp)}>
-    <TodoApp />
-  </Provider>,
-  document.getElementById('root')
-)
+export default TodoApp
