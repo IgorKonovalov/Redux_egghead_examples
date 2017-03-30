@@ -4,12 +4,18 @@ import {Provider} from 'react-redux'
 import {createStore} from 'redux'
 import TodoApp from './app'
 import {todoApp} from './reducers'
-import {loadState} from './localStorage'
+import {loadState, saveState} from './localStorage'
+import throttle from 'lodash/throttle'
 
 const persistedState = loadState()
 
 const store = createStore(todoApp, persistedState)
-console.log(store);
+
+store.subscribe(throttle(() => { // throttle гарантирует что мы вызываем функцию не чаще раза в секунду
+  saveState({
+    todos: store.getState().todos
+  })
+}, 1000))
 
 ReactDOM.render(
   <Provider store={store}>
